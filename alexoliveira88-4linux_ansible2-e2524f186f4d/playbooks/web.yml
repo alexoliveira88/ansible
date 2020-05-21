@@ -1,0 +1,37 @@
+---
+- hosts: all
+  tasks: 
+  - name: instala o apache para o debian
+    apt:
+      name: apache2
+      state: present
+    when: ansible_os_family == 'Debian'
+
+  - name: starting apache2
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+    when: ansible_os_family == 'Debian'
+
+  - block:
+    - name: instala o httpd para o RHEL
+      yum: 
+        name: httpd
+        state: present
+      when: ansible_os_family == 'RedHat'
+  
+    - name: starting httpd
+      service:
+        name: httpd
+        enabled: yes 
+        state: started
+    when: ansible_os_family == 'RedHat'
+  
+  - name: copy site page 
+    copy: 
+      src: index.html
+      dest: /var/www/html/index.html
+
+      
+

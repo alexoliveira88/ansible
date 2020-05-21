@@ -1,0 +1,12 @@
+---
+- name: RHEL Repo Install
+  yum:
+    name: https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Debian Repo Install
+  apt: 
+    deb: https://apt.puppetlabs.com/puppet6-release-xenial.deb
+    update_cache: yes
+  when: ansible_os_family == 'Debian'

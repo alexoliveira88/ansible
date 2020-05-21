@@ -1,0 +1,12 @@
+---
+- name: copia a index
+ # copy: 
+ #   src:  "{{ index }}"
+ #   dest: /var/www/html/index.html
+  template:
+    src: index.html
+    dest: /var/www/html/
+
+
+
+

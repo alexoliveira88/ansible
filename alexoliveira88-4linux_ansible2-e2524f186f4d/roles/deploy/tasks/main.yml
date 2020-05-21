@@ -1,0 +1,73 @@
+---
+# tasks file for deploy
+
+- name: Instala o nginx
+  package: 
+    name: nginx
+    state: present
+
+- name: Inicia o nginx
+  service: 
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Registra o IP do container blue
+  shell: "docker exec blue hostname -I"
+  register: ipblue
+
+- name: Registra o IP do container green
+  shell: "docker exec green hostname -I"
+  register: ipgreen
+
+- name: Verifica a configuracao habilitada
+  stat:
+    path: /etc/nginx/conf.d/blue.conf
+  register: status
+
+- block:
+
+  - name: Apaga a configuracao do blue para o nginx
+    file:
+      path: /etc/nginx/conf.d/blue.conf
+      state: absent
+
+  - name: Copia a atualizacao do site para o container green
+    copy:
+ #     src: /root/workspace/primeiro/index.html
+      src: /root/workspace/first job/index.html
+      dest: /var/lib/docker/volumes/green/_data/index.html
+
+  - name: Transfere a configuracao do green para o nginx
+    template:
+      src: green.conf
+      dest: /etc/nginx/conf.d/green.conf
+
+  when: status.stat.exists == True
+
+- block:
+
+  - name: Apaga a configuracao do green para o nginx
+    file:
+      path: /etc/nginx/conf.d/green.conf
+      state: absent
+
+  - name: Copia a atualizacao do site para o container blue
+    copy:
+#      src: /root/workspace/primeiro/index.html
+      src: /root/workspace/first job/index.html
+      dest: /var/lib/docker/volumes/blue/_data/index.html
+
+  - name: Transfere a configuracao do blue para o nginx
+    template:
+      src: blue.conf
+      dest: /etc/nginx/conf.d/blue.conf
+
+  when: status.stat.exists == False
+
+- name: Recarrega o nginx
+  service:
+    name: nginx
+    state: reloaded
+
+

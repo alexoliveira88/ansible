@@ -1,0 +1,26 @@
+---
+# tasks file for ambiente
+#
+- import_tasks: requirements.yml
+
+- name: Cria o volume para green
+  docker_volume:
+    name: green
+
+- name: Cria o volume para blue
+  docker_volume:
+    name: blue
+
+- name: Cria o container green
+  docker_container:
+    name: green
+    image: httpd
+    volumes:
+    - green:/usr/local/apache2/htdocs/
+
+- name: Cria o container blue
+  docker_container:
+    name: blue
+    image: httpd
+    volumes:
+    - blue:/usr/local/apache2/htdocs/

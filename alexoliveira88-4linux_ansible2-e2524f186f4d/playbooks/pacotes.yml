@@ -1,0 +1,25 @@
+---
+- name: instala pacotes redhat
+  hosts: lab
+  vars: 
+    - package: vim
+
+  tasks:
+  - name: instala pacotes para RHEL
+    yum:
+      name: "{{ package }}"
+      state: present
+    when: ansible_os_family == 'RedHat'
+
+- name: instala pacotes debian
+  hosts: lab
+  vars:
+    - package: vim
+
+  tasks:
+  - apt:
+      name: "{{ package }}"
+      state: present  
+    when: ansible_os_family == 'Debian'
+
+

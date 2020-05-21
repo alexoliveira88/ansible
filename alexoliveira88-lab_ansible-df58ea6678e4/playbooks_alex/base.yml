@@ -1,0 +1,45 @@
+---
+- hosts: all
+  tasks:
+    - name: Instala pacotes debian 
+      when: ansible_os_family == 'Debian'
+      apt:
+              #        name: "{{item}}"
+        name: [ 'dnsutils', 'bash-completion', 'htop', 'vim', 'mlocate']
+        state: present
+        #      with_items:
+        #        - tzdata
+        #        - dnsutils
+        #        - bash-completion
+        #        - htop
+        #        - vim
+        #        - mlocate
+        #        - nfs-common
+        #        - mtr
+      tags: packages  
+
+
+      #    - name: Instala pacotes centOS 
+      #      when: ansible_os_family == 'RedHat'
+      #      yum:
+      #        name: "{{item}}"
+      #        state: present
+      #      with_items:
+      #        - tzdata
+      #        - dnsutils
+      #        - bash-completion
+      #        - htop
+      #        - vim
+      #        - mlocate
+      #        - nfs-utils
+      #      tags: packages  
+
+
+    - name: Instala pacotes centOS 
+      when: ansible_os_family == 'RedHat'
+      yum:
+        name: [ 'bash-completion', 'htop', 'vim', 'mlocate']
+        state: present
+      tags: packages  
+
+

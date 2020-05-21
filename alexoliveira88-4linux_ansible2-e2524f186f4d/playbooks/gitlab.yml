@@ -1,0 +1,10 @@
+---
+- hosts: 192.168.8.12
+  vars:
+  - gitlab_external_url: "http://192.168.8.12/"
+  - gitlab_redirect_http_to_https: "false"
+  - gitlab_create_self_signed_cert: "false"
+  - gitlab_nginx_ssl_verify_client: ""
+  - gitlab_nginx_ssl_client_certificate: ""
+  roles:
+  - ansible-role-gitlab

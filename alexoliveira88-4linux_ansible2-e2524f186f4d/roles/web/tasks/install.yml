@@ -1,0 +1,13 @@
+---
+- name: instala o Apache
+  package: 
+    name: "{{ web_package }}"
+    state: present
+
+- name: inicia o apache
+  service: 
+    name: "{{ web_package }}"
+    state: started
+
+
+ 
